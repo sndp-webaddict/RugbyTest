@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block jquery %}
+<script src="{% static 'js/angularjs.js' %}"></script>
+{% endblock %}
+{% block content %}
+<div class="album py-5 bg-light" ng-app="Team" ng-controller="TeamController">
+    {%  verbatim %}
+    <div class="container">
+        <div class="row">
+            <div class="col col-lg-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-header">
+                        Rugby Teams
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" ng-repeat="team in teams" ng-bind="team.name"
+                            ng-click="getDetails(team.id)"></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Card Details -->
+            <div class="col col-lg-8" ng-if="players.length > 0">
+                <div class="card" ng-repeat="player in players">
+                    <img style="width: 8em;" ng-src="{{player.image}}" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title" ng-bind="player.name"></h5>
+                    </div>
+                    <ul class="list-group list-group-horizontal">
+                        <li class="list-group-item" ng-if="player.jersey_number"
+                            ng-bind=" 'Jersey Number: ' + player.jersey_number"></li>
+                        <li class="list-group-item" ng-if="player.country" ng-bind="'Country: ' +player.country"></li>
+                        <li class="list-group-item" ng-if="player.total_played_matched"
+                            ng-bind="'Total Matches: ' +player.total_played_matched"></li>
+                        <li class="list-group-item" ng-if="player.total_run" ng-bind="'Total Run: ' +player.total_run">
+                        </li>
+                        <li class="list-group-item" ng-if="player.highest_score"
+                            ng-bind="'Highest Run: ' +player.highest_score"></li>
+                        <li class="list-group-item" ng-if="player.total_fifties" ng-bind="'50s: ' +player.total_fifties">
+                        </li>
+                        <li class="list-group-item" ng-if="player.total_hundreds"
+                            ng-bind="'100s: ' +player.total_hundreds"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Start Match -->
+        <div class="row" style="margin-top: 50px;">
+            <button class="btn btn-primary col-md-4" ng-click="startMatch()">Start Match</button>
+        </div>
+        <!-- Result -->
+        <div ng-if="result" class="text-center" ng-bind="result.first_team + ' V/S ' + result.second_team"></div>
+        <table class="table" ng-if="result">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Winner</th>
+                    <th scope="col">Loser</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td ng-bind="result.winning_team + ' 100 Points'"></td>
+                    <td ng-bind="result.losing_team"></td>
+                  </tr>
+                </tbody>
+              </table>
+    </div>
+    {% endverbatim %}
+</div>
+{% endblock %}
+
+{% block footer %}
+<script src="{% static 'js/teams.js' %}"></script>
+{% endblock %}
